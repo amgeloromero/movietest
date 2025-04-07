@@ -23,7 +23,7 @@ export const Notify = {
             type: "success",
             position: 'top',
             icon: 'success',
-          //  statusBarHeight:"35",           
+            statusBarHeight:"35",           
             duration:4000,
             titleStyle: {
                 fontWeight:"bold"
@@ -36,7 +36,7 @@ export const Notify = {
             type: "warning",
             position: 'top',
             icon: 'warning',
-          //  statusBarHeight:"35",           
+            statusBarHeight:"35",           
             duration:3000,
             titleStyle: {
                 fontWeight:"bold"

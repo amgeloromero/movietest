@@ -4,7 +4,7 @@ import { Avatar,Button,Icon } from '@rneui/themed';
 import { LinearGradient } from 'expo-linear-gradient';
 import zusStore from "../store/zusStore";
 import { useNavigation } from '@react-navigation/native';
-
+import { Notify } from '../utils/notify';
 export default function Rendermovieitem(item,props) {
     const navigation = useNavigation();
     const setMovieImdb = zusStore((state) => state.setMovieImdb);
@@ -13,6 +13,8 @@ export default function Rendermovieitem(item,props) {
     item = item.item;
    
    // return false;
+const { imdbID, Title, Year, Type, Poster } = item;
+
 
     const handlePress = () => {
         setMovieImdb(item.imdbID);
@@ -24,7 +26,9 @@ export default function Rendermovieitem(item,props) {
         const isFavorite = favoritos.some(fav => fav.imdbID === item.imdbID);
         if (!isFavorite) {
             setFavoritos([...favoritos, item]);
+            Notify.success("Agregado a favoritos");
         } else {
+            Notify.warning("Esta pelicula  ya está en tus favoritos");
             console.log("Este elemento ya está en tus favoritos");
         }
     };
