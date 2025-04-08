@@ -1,30 +1,30 @@
-# Movie Search App
+# App de búsqueda de películas
 
-A React Native application for searching and managing your favorite movies using the OMDB API.
+Una aplicación React Native para buscar y gestionar tus películas favoritas con la API de OMDB.
 
-## Features
+## Características
 
-- Search movies by title
-- View detailed movie information
-- Save favorite movies
-- Share movie details via email
-- Tab navigation for movies and favorites
-- Beautiful UI with gradients and animations
+- Buscar películas por título
+- Ver información detallada de las películas
+- Guardar películas favoritas
+- Compartir detalles de las películas por correo electrónico
+- Navegación por pestañas para películas y favoritos
+- Interfaz de usuario atractiva con degradados y animaciones
 
-## Prerequisites
+## Requisitos previos
 
-- Node.js (v14 or later)
-- npm or yarn
-- Expo CLI
-- Android Studio (for Android development)
-- Xcode (for iOS development, macOS only)
+- Node.js (v14 o posterior)
+- npm o yarn
+- CLI de Expo
+- Android Studio (para desarrollo en Android)
+- Xcode (para desarrollo en iOS, solo macOS)
 
-## Installation
+## Instalación
 
-1. Clone the repository:
+1. Clona el repositorio:
 ```bash
 
 2. cd pelisbasic
 3. npm install
 4. expo start
-5. Scan the QR code with your Expo Go app on your mobile device or emulator.
+5. Escanea el código QR con la app Expo Go en tu dispositivo móvil o emulador.
