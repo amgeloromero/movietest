@@ -66,35 +66,7 @@ export default function Home() {
             console.error("Error fetching movies:", error);
         }
     };
-
-    {/*
-    const renderMovieItem = (item) => {
-        const intertem = item.item;
-      //  console.log("🚀 ~ renderMovieItem ~ intertem:", intertem)
-
-        return (
-            <TouchableOpacity style={styles.movieItem} onPress={() => {
-                console.log("Searching for:", intertem);
-                // Handle item click here
-            }}>
-                <View style={styles.movieItemContent}>
-                    <Avatar
-                        size={74}
-                        rounded
-                        source={intertem.Poster ? { uri: intertem.Poster } : {}}
-                        key={intertem.imdbID}
-                    />
-                    <View style={styles.textContainer}>
-                        <Text style={styles.movieTitle}>{intertem.Title}</Text>
-                        <Text>{intertem.Year}</Text>
-                    </View>
-                </View>
-
-            </TouchableOpacity>
-        )
-    }*/}
-
-
+  
     return (
         <View style={styles.container}>
 

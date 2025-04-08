@@ -12,8 +12,7 @@ export const Notify = {
             duration:7000,
             titleStyle: {
                 fontWeight:"bold"
-            }
-            
+            }            
         });
     },
    

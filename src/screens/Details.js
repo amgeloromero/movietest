@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView ,TouchableOpacity,Linking} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from '@rneui/themed';
 import zusStore from "../store/zusStore";
 export default function Details({ route }) {
     const [movieDetails, setMovieDetails] = useState(null);
-  //  const { imdbID } = route.params;
-
-  const { movieImdb} = zusStore();
-  
-
+    const { movieImdb } = zusStore();
     const handleShareEmail = async () => {
-        const movieInfo = `
-Movie: ${movieDetails.Title}
-Year: ${movieDetails.Year}
-Director: ${movieDetails.Director}
-Cast: ${movieDetails.Actors}
-Plot: ${movieDetails.Plot}
-Rating: ${movieDetails.imdbRating}
+            const movieInfo = `
+            Movie: ${movieDetails.Title}
+            Year: ${movieDetails.Year}
+            Director: ${movieDetails.Director}
+            Cast: ${movieDetails.Actors}
+            Plot: ${movieDetails.Plot}
+            Rating: ${movieDetails.imdbRating}
         `;
-        
+
         const mailtoUrl = `mailto:?subject=Check out this movie: ${movieDetails.Title}&body=${encodeURIComponent(movieInfo)}`;
-        
+
         try {
             const canOpen = await Linking.canOpenURL(mailtoUrl);
             if (canOpen) {
@@ -70,25 +66,25 @@ Rating: ${movieDetails.imdbRating}
 
             <View style={styles.detailsContainer}>
                 <Text style={styles.title}>{movieDetails.Title}</Text>
-            
+
                 <Text style={styles.year}>{movieDetails.Year}</Text>
-                <Text style={styles.year}> <TouchableOpacity 
-                        style={styles.shareButton}
-                        onPress={handleShareEmail}
-                    >
-                        <Icon
-                            name="email"
-                            color="#F44336"
-                            size={24}
-                        />
-                    </TouchableOpacity></Text>
+                <Text style={styles.year}> <TouchableOpacity
+                    style={styles.shareButton}
+                    onPress={handleShareEmail}
+                >
+                    <Icon
+                        name="email"
+                        color="#F44336"
+                        size={24}
+                    />
+                </TouchableOpacity></Text>
                 <View style={styles.infoRow}>
                     <Text style={styles.rating}>{movieDetails.Rated}</Text>
                     <Text style={styles.duration}>{movieDetails.Runtime}</Text>
                     <Text style={styles.genre}>{movieDetails.Genre}</Text>
-                    
+
                 </View>
-             
+
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Plot</Text>
                     <Text style={styles.plot}>{movieDetails.Plot}</Text>
@@ -116,13 +112,11 @@ Rating: ${movieDetails.imdbRating}
         </ScrollView>
     );
 }
-    
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-       
-    
     },
     loadingContainer: {
         flex: 1,
@@ -140,12 +134,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 300,
         resizeMode: 'contain',
-       // marginTop: 20,
+      
     },
     detailsContainer: {
         padding: 20,
         marginTop: 200,
-        
+
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
         marginLeft: 10,

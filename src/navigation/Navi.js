@@ -3,8 +3,8 @@ import {Home,Details} from '../screens/';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
-
-
+//COMENTARIO: este es el archivo que contiene la navegacion de la app
+//COMENTARIO: se crea un stack navigator para la navegacion de la app
 export default function Navi(){
   return (
     <NavigationContainer>
