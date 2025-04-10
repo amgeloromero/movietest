@@ -3,11 +3,12 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Linking } 
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from '@rneui/themed';
 import zusStore from "../store/zusStore";
+import Ajax from '../core/Ajax';
 export default function Details({ route }) {
     const [movieDetails, setMovieDetails] = useState(null);
     const { movieImdb } = zusStore();
     const handleShareEmail = async () => {
-            const movieInfo = `
+        const movieInfo = `
             Movie: ${movieDetails.Title}
             Year: ${movieDetails.Year}
             Director: ${movieDetails.Director}
@@ -34,10 +35,13 @@ export default function Details({ route }) {
 
     const fetchMovieDetails = async () => {
         try {
-            const response = await fetch(
-                `http://www.omdbapi.com/?i=${movieImdb}&apikey=62878274`
-            );
-            const data = await response.json();
+
+            const response = await Ajax.get('/', {
+                params: {
+                    i: movieImdb // solo el término de búsqueda
+                }
+            });
+            const data = await response.data;
             setMovieDetails(data);
         } catch (error) {
             console.error("Error fetching movie details:", error);
@@ -47,7 +51,7 @@ export default function Details({ route }) {
     if (!movieDetails) {
         return (
             <View style={styles.loadingContainer}>
-                <Text>Loading...</Text>
+                <Text><Icon name="schedule" /> Loading...</Text>
             </View>
         );
     }
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 300,
         resizeMode: 'contain',
-      
+
     },
     detailsContainer: {
         padding: 20,

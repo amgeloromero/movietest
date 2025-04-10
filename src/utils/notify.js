@@ -61,8 +61,7 @@ export const Notify = {
             position: 'top',
             type: "default",
            // statusBarHeight:"35",           
-            duration:3000,
-           // backgroundColor: Color.getColor("default"),
+            duration:3000,          
             titleStyle: {
                 fontWeight:"bold"
             }

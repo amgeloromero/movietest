@@ -11,11 +11,7 @@ export default function Rendermovieitem(item,props) {
     const setFavoritos = zusStore((state) => state.setFavoritos);
     const favoritos = zusStore((state) => state.favoritos);
     item = item.item;
-   
-   // return false;
-const { imdbID, Title, Year, Type, Poster } = item;
-
-
+    const { imdbID, Title, Year, Type, Poster } = item;
     const handlePress = () => {
         setMovieImdb(item.imdbID);
         navigation.navigate('Detalle');      

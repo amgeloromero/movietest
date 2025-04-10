@@ -9,8 +9,7 @@ export default function Favmovieitem(item) {
     const navigation = useNavigation();
     const setMovieImdb = zusStore((state) => state.setMovieImdb);
     item = item.item;
-   console.log("🚀 ~ Rendermovieitem ~ item:", item)
-    //return false;
+  
 
     const handlePress = () => {
         setMovieImdb(item.imdbID);
@@ -88,5 +87,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     }
 });
-
-//export default RenderMovieItem;

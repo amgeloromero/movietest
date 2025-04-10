@@ -4,6 +4,7 @@ import { Avatar, SearchBar, Tab, TabView ,Icon } from '@rneui/themed';
 import { Notify } from '../utils/notify';
 import { Rendermovieitem,Favmovieitem } from '../components/';
 import zusStore from "../store/zusStore";
+import Ajax from '../core/Ajax';
 export default function Home() {
     const [searchQuery, setSearchQuery] = useState("");
     const [loading, setLoading] = useState(false);
@@ -13,12 +14,17 @@ export default function Home() {
     const { favoritos, setFavoritos  } = zusStore();
     const searchMoviesInit = async () => {
         try {
-            const response = await fetch(
-                `http://www.omdbapi.com/?s=marvel&apikey=62878274`
-            );
-            const data = await response.json();
-            if (data.Search) {
-                setMovies(data.Search);
+             const response = await Ajax.get('/', {
+                params: {
+                  s: 'marvel' // solo el término de búsqueda
+                }
+              });
+         
+            const {Search} = response.data;
+            const {Response} = response.data;
+         
+            if (Response) {
+                setMovies(Search);
             }
         } catch (error) {
             console.error("Error fetching initial movies:", error);
@@ -30,12 +36,12 @@ export default function Home() {
         console.log('Listdatafav',moviesfav);
         console.log('favoritos',favoritos);
     };
-
+/*
     const changetab = (index) => {    
         setIndex(index);
-        console.log('changetab',favoritos);
+      
     };
-    
+    */
     
     useEffect(() => {
         searchMoviesInit();
@@ -49,18 +55,32 @@ export default function Home() {
         try {
             console.log("Searching for:", searchQuery);
             setLoading(true);
+          /*  
             const response = await fetch(
                 `http://www.omdbapi.com/?s=${searchQuery}&apikey=62878274`
             );
             // console.log(response.data);
-            const data = await response.json();
+            const data = await response.json();*/
             // console.log("data",data);
+            
+            const response = await Ajax.get('/', {
+                params: {
+                  s: searchQuery // solo el término de búsqueda
+                }
+              });            
+           
             setLoading(false);
-            if (data.Search) {
-                setMovies(data.Search);
+            const {Search} = response.data;
+            const {Response} = response.data;
+            console.log("🚀 ~ Home ~ Response:", Response)
+            if (Response=='True') {
+                console.log("🚀 ~ Home ~ Search:", Search)   
+                setMovies(Search);
             } else {
-                Notify.error(data.Error);
-
+              
+                const {Error}=response.data;
+                console.log("🚀 ~ Error:", Error)
+                Notify.error(Error);
             }
         } catch (error) {
             console.error("Error fetching movies:", error);
@@ -73,13 +93,12 @@ export default function Home() {
             <Tab
                 value={index}
               //  onChange={setIndex}
-
+                dense={true}
                 onChange={(newIndex) => {
                     setIndex(newIndex);
                     Listdatafav();  // Ejecuta la función cuando se presiona un Tab
                 }}
-                //indicatorStyle={{ backgroundColor: 'red', height: 2 }}
-               // variant="secondary"
+               
             >
                 <Tab.Item title="" titleStyle={styles.tabTitle} 
                    containerStyle={(active) => ({
@@ -100,7 +119,10 @@ export default function Home() {
                 })} />
 
             </Tab>
-            <TabView value={index} onChange={setIndex} animationType="spring">
+            <TabView value={index} onChange={(newIndex) => {
+                    setIndex(newIndex);
+                    Listdatafav();  //comentario: Ejecuta la función cuando se presiona un Tab
+                }} animationType="spring">
 
                 <TabView.Item style={{
                     width: '100%',
@@ -118,8 +140,9 @@ export default function Home() {
                             showLoading={loading}
                             onSubmitEditing={searchMovies}
                             containerStyle={styles.searchbar}
+                            loadingProps={{ size: 'small', color: 'white' }}
                         />
-                        <FlatList
+                       {(movies)? <FlatList
                             data={movies}
                             // renderItem={(item) => Rendermovieitem(item)}
                             renderItem={({ item }) => <Rendermovieitem item={item} 
@@ -127,7 +150,8 @@ export default function Home() {
                             isFavorite={favoritos.some(fav => fav.imdbID === item.imdbID)}/>}
                             keyExtractor={item => item.imdbID}
                             style={styles.movieList}
-                        />
+                        />:
+                        <><Text><Icon name="schedule" /> Loading..</Text></>}
 
                     </>
 
@@ -153,11 +177,7 @@ export default function Home() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        // padding: 16,     
-        // marginLeft: 2,
-        // marginRight: 2,
-        // marginTop: 2,
+        flex: 1,       
     },
     searchInput: {
         height: 40,
@@ -168,9 +188,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     movieList: {
-        flex: 1,/*
-        borderColor: 'red',
-        borderWidth: 1,*/
+        flex: 1,
     },
     movieItem: {
         padding: 16,
