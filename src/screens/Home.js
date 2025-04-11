@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, TextInput, FlatList, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { Avatar, SearchBar, Tab, TabView ,Icon } from '@rneui/themed';
+import { Avatar, SearchBar, Tab, TabView, Icon } from '@rneui/themed';
 import { Notify } from '../utils/notify';
-import { Rendermovieitem,Favmovieitem } from '../components/';
+import { Rendermovieitem, Favmovieitem } from '../components/';
 import zusStore from "../store/zusStore";
 import Ajax from '../core/Ajax';
 export default function Home() {
@@ -11,8 +11,12 @@ export default function Home() {
     const [movies, setMovies] = useState([]);
     const [moviesfav, setMoviesfav] = useState([]);
     const [index, setIndex] = useState(0);
-    const { favoritos, setFavoritos  } = zusStore();
+    const { favoritos, setFavoritos } = zusStore();
     const searchMoviesInit = async () => {
+
+        setMovies([]);
+        /*
+        INFO: esto es para que no se carguen los datos al iniciar la app
         try {
              const response = await Ajax.get('/', {
                 params: {
@@ -29,104 +33,92 @@ export default function Home() {
         } catch (error) {
             console.error("Error fetching initial movies:", error);
         }
+        */
     };
 
-    const Listdatafav = () => {    
-        setMoviesfav(favoritos);   
-        console.log('Listdatafav',moviesfav);
-        console.log('favoritos',favoritos);
+    const Listdatafav = () => {
+        setMoviesfav(favoritos);
+
     };
-/*
-    const changetab = (index) => {    
-        setIndex(index);
-      
-    };
-    */
     
+
     useEffect(() => {
         searchMoviesInit();
     }, []);
 
 
-   
+
 
 
     const searchMovies = async () => {
         try {
-            console.log("Searching for:", searchQuery);
+
             setLoading(true);
-          /*  
-            const response = await fetch(
-                `http://www.omdbapi.com/?s=${searchQuery}&apikey=62878274`
-            );
-            // console.log(response.data);
-            const data = await response.json();*/
-            // console.log("data",data);
-            
+
             const response = await Ajax.get('/', {
                 params: {
-                  s: searchQuery // solo el término de búsqueda
+                    s: searchQuery // solo el término de búsqueda
                 }
-              });            
-           
+            });
+
             setLoading(false);
-            const {Search} = response.data;
-            const {Response} = response.data;
-            console.log("🚀 ~ Home ~ Response:", Response)
-            if (Response=='True') {
-                console.log("🚀 ~ Home ~ Search:", Search)   
+            const { Search } = response.data;
+            const { Response } = response.data;
+
+            if (Response == 'True') {
+
                 setMovies(Search);
             } else {
-              
-                const {Error}=response.data;
-                console.log("🚀 ~ Error:", Error)
+
+                const { Error } = response.data;
+
                 Notify.error(Error);
             }
         } catch (error) {
             console.error("Error fetching movies:", error);
         }
     };
-  
+
     return (
         <View style={styles.container}>
 
             <Tab
                 value={index}
-              //  onChange={setIndex}
+                //  onChange={setIndex}
                 dense={true}
                 onChange={(newIndex) => {
                     setIndex(newIndex);
                     Listdatafav();  // Ejecuta la función cuando se presiona un Tab
                 }}
-               
+
             >
-                <Tab.Item title="" titleStyle={styles.tabTitle} 
-                   containerStyle={(active) => ({
-                    backgroundColor: active ? "#fafafa": "#eaeaea" ,
+                <Tab.Item title="" titleStyle={styles.tabTitle}
+                    containerStyle={(active) => ({
+                        backgroundColor: active ? "#fafafa" : "#eaeaea",
                     })}
                     buttonStyle={(active) => ({
-                        backgroundColor: active? "#fafafa": "#eaeaea",
+                        backgroundColor: active ? "#fafafa" : "#eaeaea",
                     })}
-                    icon={<Icon name='movie'/>}
-                    />
-                <Tab.Item titleStyle={styles.tabTitle}  
-                 onPress={Listdatafav}
-                 icon={<Icon name='star'
+                    icon={<Icon name='movie' />}
+                />
+                <Tab.Item titleStyle={styles.tabTitle}
                     onPress={Listdatafav}
-                 />}
-                containerStyle={(active) => ({
-                backgroundColor: active ? "#fafafa": "#eaeaea" ,
-                })} />
+                    icon={<Icon name='star'
+                        onPress={Listdatafav}
+                    />}
+                    containerStyle={(active) => ({
+                        backgroundColor: active ? "#fafafa" : "#eaeaea",
+                    })} />
 
             </Tab>
             <TabView value={index} onChange={(newIndex) => {
-                    setIndex(newIndex);
-                    Listdatafav();  //comentario: Ejecuta la función cuando se presiona un Tab
-                }} animationType="spring">
+                setIndex(newIndex);
+                Listdatafav();  //comentario: Ejecuta la función cuando se presiona un Tab
+            }} animationType="spring">
 
                 <TabView.Item style={{
                     width: '100%',
-                    flex: 1,               
+                    flex: 1,
                 }}>
                     <>
                         <SearchBar
@@ -142,16 +134,16 @@ export default function Home() {
                             containerStyle={styles.searchbar}
                             loadingProps={{ size: 'small', color: 'white' }}
                         />
-                       {(movies)? <FlatList
+                        {(movies) ? <FlatList
                             data={movies}
                             // renderItem={(item) => Rendermovieitem(item)}
-                            renderItem={({ item }) => <Rendermovieitem item={item} 
-                           // onfavorite={()=>props}
-                            isFavorite={favoritos.some(fav => fav.imdbID === item.imdbID)}/>}
+                            renderItem={({ item }) => <Rendermovieitem item={item}
+                                // onfavorite={()=>props}
+                                isFavorite={favoritos.some(fav => fav.imdbID === item.imdbID)} />}
                             keyExtractor={item => item.imdbID}
                             style={styles.movieList}
-                        />:
-                        <><Text><Icon name="schedule" /> Loading..</Text></>}
+                        /> :
+                            <><Text><Icon name="schedule" /> Loading..</Text></>}
 
                     </>
 
@@ -160,14 +152,14 @@ export default function Home() {
 
                 <TabView.Item style={{
                     width: '100%',
-                    flex: 1,               
+                    flex: 1,
                 }}>
-                  <FlatList
-                            data={moviesfav}                          
-                            renderItem={({ item }) => <Favmovieitem item={item} />}
-                            keyExtractor={item => item.imdbID}
-                            style={styles.movieList}
-                        />
+                    <FlatList
+                        data={moviesfav}
+                        renderItem={({ item }) => <Favmovieitem item={item} />}
+                        keyExtractor={item => item.imdbID}
+                        style={styles.movieList}
+                    />
                 </TabView.Item>
 
             </TabView>
@@ -177,7 +169,7 @@ export default function Home() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,       
+        flex: 1,
     },
     searchInput: {
         height: 40,

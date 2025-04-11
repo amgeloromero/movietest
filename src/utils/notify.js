@@ -1,5 +1,5 @@
 import {showMessage} from "react-native-flash-message";
-//import {Color} from "../theme/color";
+
 
 export const Notify = {
     error: function (msg) {

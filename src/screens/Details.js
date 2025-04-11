@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Linking,Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from '@rneui/themed';
 import zusStore from "../store/zusStore";
@@ -7,27 +7,31 @@ import Ajax from '../core/Ajax';
 export default function Details({ route }) {
     const [movieDetails, setMovieDetails] = useState(null);
     const { movieImdb } = zusStore();
-    const handleShareEmail = async () => {
-        const movieInfo = `
-            Movie: ${movieDetails.Title}
-            Year: ${movieDetails.Year}
-            Director: ${movieDetails.Director}
-            Cast: ${movieDetails.Actors}
-            Plot: ${movieDetails.Plot}
-            Rating: ${movieDetails.imdbRating}
-        `;
 
-        const mailtoUrl = `mailto:?subject=Check out this movie: ${movieDetails.Title}&body=${encodeURIComponent(movieInfo)}`;
-
-        try {
-            const canOpen = await Linking.canOpenURL(mailtoUrl);
-            if (canOpen) {
-                await Linking.openURL(mailtoUrl);
-            }
-        } catch (error) {
-            console.error('Error opening email:', error);
-        }
-    };
+    
+const handleShareEmail = async () => {
+    if (!movieDetails) {
+      Alert.alert("Error", "No hay información de la película.");
+      return;
+    }
+  
+    const movieInfo = [
+      `Movie: ${movieDetails.Title}`,
+      `Year: ${movieDetails.Year}`,
+      `Director: ${movieDetails.Director}`,
+      `Cast: ${movieDetails.Actors}`,
+      `Plot: ${movieDetails.Plot}`,
+      `Rating: ${movieDetails.imdbRating}`
+    ].join('\n');
+  
+    const mailtoUrl = `mailto:test@example.com?subject=Check out this movie: ${encodeURIComponent(movieDetails.Title)}&body=${encodeURIComponent(movieInfo)}`;
+    try {
+        await Linking.openURL(mailtoUrl);
+      } catch (error) {
+        Alert.alert("No se pudo abrir el correo"+error);
+      }
+     
+  };
 
     useEffect(() => {
         fetchMovieDetails();
@@ -72,7 +76,8 @@ export default function Details({ route }) {
                 <Text style={styles.title}>{movieDetails.Title}</Text>
 
                 <Text style={styles.year}>{movieDetails.Year}</Text>
-                <Text style={styles.year}> <TouchableOpacity
+                <Text style={styles.year}></Text>
+                <TouchableOpacity
                     style={styles.shareButton}
                     onPress={handleShareEmail}
                 >
@@ -81,7 +86,7 @@ export default function Details({ route }) {
                         color="#F44336"
                         size={24}
                     />
-                </TouchableOpacity></Text>
+                </TouchableOpacity>
                 <View style={styles.infoRow}>
                     <Text style={styles.rating}>{movieDetails.Rated}</Text>
                     <Text style={styles.duration}>{movieDetails.Runtime}</Text>
@@ -134,6 +139,11 @@ const styles = StyleSheet.create({
         top: 0,
         height: 300,
     },
+    shareButton: {
+        position: 'absolute',
+        top: 22,
+        right: 20, 
+    },
     poster: {
         width: '100%',
         height: 300,
@@ -155,11 +165,14 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 8,
+        //borderColor: 'red',
+        paddingRight: 15,
+       // borderWidth: 5,
     },
     year: {
         fontSize: 18,
         color: '#666',
-        marginBottom: 16,
+       // marginBottom: ,
     },
     infoRow: {
         flexDirection: 'row',

@@ -74,8 +74,7 @@ const styles = StyleSheet.create({
         top: 10,
         right: 10,
         zIndex: 10, // opcional, por si hay solapamientos
-       /* borderColor: 'red',
-        borderWidth: 5,*/
+      
         padding: 5,
       },
     movieItem: {
@@ -93,8 +92,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderColor: 'red',
-       /* borderWidth: 5,
-        marginRight: 30,*/
+      
     },
     textContainer: {
         marginLeft: 16,
@@ -104,6 +102,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 4,
+        paddingRight: 15,
     },
     gradient: {
         paddingVertical: 8,
